@@ -1,0 +1,24 @@
+name: Deploy app on DJ Intance!
+
+on:
+    push:
+        branches:
+            - master
+
+    pull_request: 
+        branches: 
+            - master
+            
+jobs:
+    deployment:
+        runs-on: ubuntu-latest
+        steps:
+        - name: Make API call to deploy master branch
+          run: |
+                curl -u ${{secrets.DEV_USERNAME}}:${{secrets.DEV_PASSWORD}} \
+                -X POST "https://hub-dj.pipeforce.dev/api/v3/command:app.update" \
+                -H "Accept: application/json" \
+                -d "async=false" \
+                -d "branch=master" \
+                -d "github=logabit/fluffy-adventure" \
+                -d "secret=github-default-readonly"
